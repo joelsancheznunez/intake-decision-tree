@@ -55,6 +55,9 @@ function nextQuestion(questionId) {
 
     html += `
             </div>
+            <br>
+            <hr>
+            <button class="btn btn-outline-primary btn-lg mt-3" onclick="resetTree()">Start Over</button>
         </div>
     `;
 
@@ -66,7 +69,7 @@ function handleAnswer(questionId, answer) {
     let nextQuestionId;
 
     if (questionId === 'fearInterview') {
-        // Map the action back to the original option key
+
         if (answer === 'positive') {
             nextQuestionId = question.positive;
         } else if (answer === 'notconductedyet') {
@@ -95,7 +98,8 @@ function showResult(message) {
         <div class="alert alert-info">
             <strong>Decision:</strong> ${message}
         </div>
-        <button class="btn btn-outline-primary" onclick="resetTree()">Start Over</button>
+        <br>
+        <button class="btn btn-outline-primary btn-lg" onclick="resetTree()">Start Over</button>
     `;
 }
 
