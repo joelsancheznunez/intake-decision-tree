@@ -1,35 +1,47 @@
 const questions = {
-    detained: {
-        text: "Is the caller detained in the State of Louisiana?",
-        yes: "georgia",
-        no: "consultGrace"
-    },
+
     georgia: {
-        text: "Is the caller a national from Georgia?",
+        text: "Is the person a national from Georgia?",
+        yes: "detained",
+        no: "oneEntryGeorgia"
+    },
+
+    detained: {
+        text: "Is the person detained in the State of Louisiana? Specifically in one of these following centers: Winn Correctional, Jackson Parish or River Correctional?",
         yes: "oneEntry",
         no: "accept"
     },
+
     oneEntry: {
-        text: "Is this the caller's only entry to the U.S?",
+        text: "Is this the first and only entry to the U.S?",
         yes: "hearingDate",
         no: "reject"
     },
+
+    oneEntryGeorgia: {
+        text: "For this NON-Georgia Citizen. Is this the first and only entry to the U.S?",
+        yes: "consultGrace",
+        no: "accept"
+    },
+
     hearingDate: {
         text: "Is the hearing court at least 4 weeks ahead?",
         yes: "criminalRecords",
         no: "reject"
     },
+
     criminalRecords: {
-        text: "Does the caller have any criminal records?",
+        text: "Does the person have any criminal records?",
         yes: "reject",
         no: "fearInterview"
     },
+
     fearInterview: {
         text: "What is the result of the Fear Interview?",
         options: ["POSITIVE", "Not Conducted yet", "NEGATIVE"],
         positive: "accept",
         notConducted: "accept",
-        negative: "reject"
+        negative: "rejectFearInterview"
     }
 };
 
@@ -44,7 +56,7 @@ function nextQuestion(questionId) {
     if (question.options) {
         question.options.forEach(option => {
             const action = option.replace(/ /g, '').toLowerCase();
-            html += `<h2 class="btn btn-outline-info btn me-2" onclick="handleAnswer('${questionId}', '${action}')">${option}</h2>`;
+            html += `<button class="btn btn-outline-primary btn me-2" onclick="handleAnswer('${questionId}', '${action}')">${option}</button>`;
         });
     } else {
         html += `
@@ -69,7 +81,6 @@ function handleAnswer(questionId, answer) {
     let nextQuestionId;
 
     if (questionId === 'fearInterview') {
-
         if (answer === 'positive') {
             nextQuestionId = question.positive;
         } else if (answer === 'notconductedyet') {
@@ -87,6 +98,8 @@ function handleAnswer(questionId, answer) {
         showResult("Reject the case. Do not proceed with intake.");
     } else if (nextQuestionId === 'consultGrace') {
         showResult("Consult with Attorney Grace for further guidance.");
+    } else if (nextQuestionId === 'rejectFearInterview') {
+        showResult("Negative Fear Interview. Charge: $5,000.00 and advise the customer: There is only a 10% chance of reversing the decision. Due to the low likelihood of success, this fee is NON-refundable.");
     } else {
         nextQuestion(nextQuestionId);
     }
@@ -95,9 +108,12 @@ function handleAnswer(questionId, answer) {
 function showResult(message) {
     document.getElementById('decisionTree').innerHTML = '';
     document.getElementById('result').innerHTML = `
+        <br>
         <div class="alert alert-info">
             <strong>Decision:</strong> ${message}
         </div>
+        <br>
+        <hr>
         <br>
         <button class="btn btn-outline-primary btn-lg" onclick="resetTree()">Start Over</button>
     `;
@@ -105,8 +121,8 @@ function showResult(message) {
 
 function resetTree() {
     document.getElementById('result').innerHTML = '';
-    nextQuestion('detained');
+    nextQuestion('georgia'); // Start the decision tree from the beginning (georgia question)
 }
 
 // Start the decision tree
-nextQuestion('detained');
+nextQuestion('georgia');
