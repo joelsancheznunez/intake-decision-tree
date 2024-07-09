@@ -56,7 +56,7 @@ function nextQuestion(questionId) {
     if (question.options) {
         question.options.forEach(option => {
             const action = option.replace(/ /g, '').toLowerCase();
-            html += `<button class="btn btn-outline-primary btn me-2" onclick="handleAnswer('${questionId}', '${action}')">${option}</button>`;
+            html += `<button class="btn btn-outline-info btn me-2" onclick="handleAnswer('${questionId}', '${action}')">${option}</button>`;
         });
     } else {
         html += `
