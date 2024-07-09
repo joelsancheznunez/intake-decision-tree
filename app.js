@@ -3,7 +3,7 @@ const questions = {
     georgia: {
         text: "Is the person a national from Georgia?",
         yes: "detained",
-        no: "oneEntryGeorgia"
+        no: "oneEntryNonGeorgia"
     },
 
     detained: {
@@ -18,10 +18,10 @@ const questions = {
         no: "reject"
     },
 
-    oneEntryGeorgia: {
+    oneEntryNonGeorgia: {
         text: "For this NON-Georgia Citizen. Is this the first and only entry to the U.S?",
-        yes: "consultGrace",
-        no: "accept"
+        yes: "fearInterview",
+        no: "consultGrace"
     },
 
     hearingDate: {
